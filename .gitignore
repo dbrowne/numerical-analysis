@@ -6,6 +6,7 @@
 *.exe
 *.o
 *.so
+*.pyc
 
 # Packages #
 ############
@@ -25,18 +26,13 @@
 *.log
 *.sql
 *.sqlite
+*.aux
 
 # OS generated files #
 ######################
 .DS_Store
 ehthumbs.db
 Thumbs.db
-
-# LaTeX #
-#########
-.aux
-.ps
-.pdf
 
 # Directories #
 ###############
