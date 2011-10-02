@@ -12,7 +12,7 @@ def newton_raphson(f, df, p0, n, tol):
             return
         i += 1
         p0 = p
-    print "Root not found to tolerance %.9f in %n..." % tol
+    print "Root not in %n steps..."
     print "Stopped at %.9f" % p
 
 def secant(f, p0, p1, n, tol):
@@ -32,7 +32,7 @@ def secant(f, p0, p1, n, tol):
         q0 = q1
         p1 = p
         q1 = f(p)
-    print "Root not found to tolerance %.9f in %n..." % tol
+    print "Root not in %n steps..."
     print "Stopped at %.9f" % p
 	
 def regula_falsi(f, p0, p1, n, tol):
@@ -54,14 +54,38 @@ def regula_falsi(f, p0, p1, n, tol):
             q0 = q1
         p1 = p
         q1 = q
-    print "Root not found to tolerance %.9f in %n..." % tol
+    print "Root not in %n steps..."
     print "Stopped at %.9f" % p
-    
-#def f(x): return 230*x**4 + 18*x**3 + 9*x**2 - 221*x - 9
-def f(x): return (x-2)**2 - math.log(x)
-#def df(x): return 920*x**3 + 54*x**2 + 18*x - 221
-def df(x): return 2*(x-2)-(1/x)
 
-newton_raphson(f, df, 3.0, 30, 0.00001)
-secant(f, math.e, 4, 30, 0.00001)
+def modified_newton(f, df, d2f, p0, n, tol):
+    print "Using modified Newton's Method..."
+    print "p0 = %.9f" %p0
+
+    def g(y): return f(y)/df(y)
+    def dg(y): return 1 - (f(y)*d2f(y))/(df(y)**2)
+
+    i = 1
+    while (i <= n):
+        #p = p0 - (f(p0)*df(p0))/(df(p0)**2 - f(p0)*d2f(p0))
+        p = p0 - g(p0)/dg(p0)
+        print "Current approximation is %.9f" % p
+        if (abs(p - p0) < tol):
+            print "Approximate root is %.9f (found in %i steps)" %(p,i)
+            return
+        i += 1
+        p0 = p
+    print "Root not in %n steps..."
+    print "Stopped at %.9f" % p
+
+def f(x): return x**2 - 2*x*(math.e)**(-x) + (math.e)**(-2*x) 
+#def f(x): return math.cos(x + math.sqrt(2)) + x*((x/2) + math.sqrt(2))
+#def df(x): return 2*x - 2*math.e**(-2*x) - 2*math.e**(-x) + 2*x*math.e**x
+def df(x): return 2*(math.e)**(-2*x) * ((math.e)**x + 1) * (x*(math.e)**x - 1)
+#def df(x): return x - math.sin(x + math.sqrt(2)) + math.sqrt(2)
+#def d2f(x): return 2 + 4*math.e**(-2*x) + 2*math.e**(-x) + 2*x*math.e**x + 2*math.e**x
+def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (math.e)**(2*x) + 2)
+
+newton_raphson(f, df, 0.5, 30, 0.00001)
+modified_newton(f, df, d2f, 0.5, 30, 0.00001)
+#secant(f, math.e, 4, 30, 0.00001)
 #regula_falsi(f, 0.0, 1.0, 30, 0.000001)
