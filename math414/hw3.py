@@ -108,9 +108,8 @@ def aitken(f, p0, n):
     while (i <= m):
         arr[i-1] = f(p0)
         q = arr[i-1]
-        print "i,q = %d,%.9f" % (i,q)
         print "Iteration %d: %.9f" % (i,q)
-        p0 = arr[i-1]
+        p0 = q
         i += 1
     # generate accelerated sequence
     print ""
@@ -145,7 +144,7 @@ def steffensen(f, p0, n, tol):
     print "Stopped at %.9f" % p
 
 # Function definitions
-def f(x): return (x+(2/x))/2
+def f(x): return (2 - math.e**x + x**2)/3
 #def f(x): return math.cos(x + math.sqrt(2)) + x*((x/2) + math.sqrt(2))
 #def df(x): return 2*x - 2*math.e**(-2*x) - 2*math.e**(-x) + 2*x*math.e**x
 def df(x): return 2*(math.e)**(-2*x) * ((math.e)**x + 1) * (x*(math.e)**x - 1)
@@ -158,5 +157,5 @@ def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (
 #secant(f, math.e, 4, 30, 0.00001)
 #regula_falsi(f, 0.0, 1.0, 30, 0.000001)
 #modified_newton(f, df, d2f, 0.5, 30, 0.00001)
-aitken(f, 1, 6)
+aitken(f, 0.5, 6)
 #steffensen(f, 0.5, 30, 0.000000000001)
