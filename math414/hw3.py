@@ -7,6 +7,7 @@ import math
 
 # Newton's Method for finding roots
 # Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
+# Inputs: function, derivative, initial approximation, maximum iterations, tolerance
 def newton_raphson(f, df, p0, n, tol):
     print "Using Newton/Raphson Method..."
     print "p0 = %.9f" % p0
@@ -24,6 +25,7 @@ def newton_raphson(f, df, p0, n, tol):
 
 # Secant Method for finding roots
 # Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
+# Inputs: function, initial approximations, maximum iterations, tolerance
 def secant(f, p0, p1, n, tol):
     print "Using Secant Method..."
     print "p0 = %.9f p1 = %.9f" % (p0,p1)
@@ -46,6 +48,7 @@ def secant(f, p0, p1, n, tol):
 	
 # Regula Falsi Method for finding roots
 # Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
+# Inputs: function, initial approximations, maximum iterations, tolerance
 def regula_falsi(f, p0, p1, n, tol):
     print "Using Regula Falsi (false position) method..."
     print "p0 = %.9f p1 = %.9f" % (p0,p1)
@@ -69,6 +72,7 @@ def regula_falsi(f, p0, p1, n, tol):
     print "Stopped at %.9f" % p
 
 # Modified Newton's Method for finding roots
+# Inputs: function, derivative, second derivative, initial approximation, maximum iterations, tolerance
 def modified_newton(f, df, d2f, p0, n, tol):
     print "Using modified Newton's Method..."
     print "p0 = %.9f" %p0
@@ -89,9 +93,41 @@ def modified_newton(f, df, d2f, p0, n, tol):
     print "Root not found in %n steps..."
     print "Stopped at %.9f" % p
 
+# Aitken's Method for accelerating convergence
+# Inputs: function, initial approximation, number of iterations
+def aitken(f, p0, n):
+    print "Using Aitken's Method..."
+    print "p0 = %.9f" % p0
+    print ""
+    m = n + 2
+    # create array of size m
+    arr = [0] * m
+    # generate original sequence
+    print "Generating original sequence:" 
+    i = 1
+    while (i <= m):
+        arr[i-1] = f(p0)
+        q = arr[i-1]
+        print "i,q = %d,%.9f" % (i,q)
+        print "Iteration %d: %.9f" % (i,q)
+        p0 = arr[i-1]
+        i += 1
+    # generate accelerated sequence
+    print ""
+    print "Generating accelerated sequence:"
+    i = 1
+    while (i <= n):
+        p1 = arr[i-1]
+        p2 = arr[i]
+        p = p0 - ((p1-p0)**2)/(p2-2*p1+p0)
+        print "Iteration %d: %.9f" % (i,p)
+        p0 = p1
+        i += 1
+
 # Steffensen's Method for finding roots
 # Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
-def steffensen(f, p0, n, tol)
+# Inputs: function, initial approximation, maximum iterations, tolerance
+def steffensen(f, p0, n, tol):
     print "Using Steffensen's Method..."
     print "p0 = %.9f" % p0
     i = 1
@@ -101,7 +137,7 @@ def steffensen(f, p0, n, tol)
         p = p0 - ((p1-p0)**2)/(p2-2*p1+p0)
         print "Current approximation is %.9f" % p
         if (abs(p - p0) < tol):
-            print "Root is %.9f (%d iterations)" % (p,i+1)
+            print "Root is %.9f (%d iterations)" % (p,i)
             return
         i += 1
         p0 = p
@@ -109,7 +145,7 @@ def steffensen(f, p0, n, tol)
     print "Stopped at %.9f" % p
 
 # Function definitions
-def f(x): return x**2 - 2*x*(math.e)**(-x) + (math.e)**(-2*x) 
+def f(x): return (x+(2/x))/2
 #def f(x): return math.cos(x + math.sqrt(2)) + x*((x/2) + math.sqrt(2))
 #def df(x): return 2*x - 2*math.e**(-2*x) - 2*math.e**(-x) + 2*x*math.e**x
 def df(x): return 2*(math.e)**(-2*x) * ((math.e)**x + 1) * (x*(math.e)**x - 1)
@@ -118,8 +154,9 @@ def df(x): return 2*(math.e)**(-2*x) * ((math.e)**x + 1) * (x*(math.e)**x - 1)
 def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (math.e)**(2*x) + 2)
 
 # Run analysis...
-newton_raphson(f, df, 0.5, 30, 0.00001)
+#newton_raphson(f, df, 0.5, 30, 0.00001)
 #secant(f, math.e, 4, 30, 0.00001)
 #regula_falsi(f, 0.0, 1.0, 30, 0.000001)
 #modified_newton(f, df, d2f, 0.5, 30, 0.00001)
-#steffenson(f, 0.5, 30, 0.0001)
+aitken(f, 1, 6)
+#steffensen(f, 0.5, 30, 0.000000000001)
