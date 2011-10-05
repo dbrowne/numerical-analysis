@@ -99,6 +99,7 @@ def aitken(f, p0, n):
     print "Using Aitken's Method..."
     print "p0 = %.9f" % p0
     print ""
+    pm = p0
     m = n + 2
     # create array of size m
     arr = [0] * m
@@ -106,15 +107,15 @@ def aitken(f, p0, n):
     print "Generating original sequence:" 
     i = 1
     while (i <= m):
-        arr[i-1] = f(p0)
+        arr[i-1] = f(pm)
         q = arr[i-1]
         print "Iteration %d: %.9f" % (i,q)
-        p0 = q
+        pm = q
         i += 1
     # generate accelerated sequence
     print ""
     print "Generating accelerated sequence:"
-    p = p0
+    pn = p0
     i = 1
     while (i <= n):
         p1 = arr[i-1]
@@ -123,8 +124,8 @@ def aitken(f, p0, n):
             print "Zero in the denominator."
             print "Stopped at %.9f" % p
             return
-        p = p0 - ((p1-p0)**2)/(p2-2*p1+p0)
-        print "Iteration %d: %.9f" % (i,p)
+        pn = p0 - ((p1-p0)**2)/(p2-2*p1+p0)
+        print "Iteration %d: %.9f" % (i,pn)
         p0 = p1
         i += 1
 
@@ -154,7 +155,7 @@ def steffensen(f, p0, n, tol):
     print "Stopped at %.9f" % p
 
 # Function definitions
-def f(x): return x**3 - x - 1
+def f(x): return (2 - math.e**x + x**2)/3
 def df(x): return 2*(math.e)**(-2*x) * ((math.e)**x + 1) * (x*(math.e)**x - 1)
 def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (math.e)**(2*x) + 2)
 
@@ -163,5 +164,5 @@ def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (
 #secant(f, math.e, 4, 30, 0.00001)
 #regula_falsi(f, 0.0, 1.0, 30, 0.000001)
 #modified_newton(f, df, d2f, 0.5, 30, 0.00001)
-#aitken(f, 1, 6)
-steffensen(f, 1.5, 30, 0.0001)
+aitken(f, 0.5, 6)
+#steffensen(f, 0.0, 30, 0.00001)
