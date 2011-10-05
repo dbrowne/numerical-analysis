@@ -28,6 +28,24 @@ def bisection(f, a, b, n, tol):
     print "Root not found in %n steps..."
     print "Stopped at %.9f" % p
 
+# Fixed Point Iteration Method for finding roots
+# Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
+# Inputs: function, initial approximation, maximum iterations, tolerance
+def fixed_point(f, p0, n, tol):
+    print "Using fixed point iteration..."
+    print "p0 = %.9f" % p0
+    i = 1
+    while (i <= n):
+        p = f(p0)
+        print "Current approximation is %.9f" % p
+        if (abs(p - p0) < tol):
+            print "Approximate root is %.9f" % p
+            return
+        i += 1
+        p0 = p
+    print "Root not found in %n steps..."
+    print "Stopped at %.9f" % p
+
 # Newton's Method for finding roots
 # Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
 # Inputs: function, derivative, initial approximation, maximum iterations, tolerance
@@ -178,12 +196,13 @@ def steffensen(f, p0, n, tol):
     print "Stopped at %.9f" % p
 
 # Function definitions
-def f(x): return x**2 - 3
+def f(x): return x - x**3 - 4*x**2 + 10
 def df(x): return 2*(math.e)**(-2*x) * ((math.e)**x + 1) * (x*(math.e)**x - 1)
 def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (math.e)**(2*x) + 2)
 
 # Run analysis...
-bisection(f, 1.0, 2.0, 30, 0.0001)
+#bisection(f, 1.0, 2.0, 30, 0.0001)
+fixed_point(f, 1.5, 30, 0.00001)
 #newton_raphson(f, df, 0.5, 30, 0.00001)
 #secant(f, math.e, 4, 30, 0.00001)
 #regula_falsi(f, 0.0, 1.0, 30, 0.000001)
