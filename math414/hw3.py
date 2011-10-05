@@ -5,6 +5,29 @@
 
 import math
 
+# Bisection method for finding roots
+# Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
+# Inputs: function, endpoints, maximum iterations, tolerance
+def bisection(f, a, b, n, tol):
+    print "Using Bisection Method..."
+    print "a = %.9f, b = %.9f" %(a,b)
+    i = 1
+    FA = f(a)
+    while (i <= n):
+        p = a + (b - a)/2
+        print "Current approximation is %.9f" % p
+        FP = f(p)
+        if FP == 0 or (b-a)/2 < tol:
+            print "Approximate root is %.9f (found in %i steps)" % (p,i)
+            return
+        i += 1
+        if (FA*FP > 0):
+            a = p
+        else:
+            b = p
+    print "Root not found in %n steps..."
+    print "Stopped at %.9f" % p
+
 # Newton's Method for finding roots
 # Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
 # Inputs: function, derivative, initial approximation, maximum iterations, tolerance
@@ -155,14 +178,15 @@ def steffensen(f, p0, n, tol):
     print "Stopped at %.9f" % p
 
 # Function definitions
-def f(x): return (2 - math.e**x + x**2)/3
+def f(x): return x**2 - 3
 def df(x): return 2*(math.e)**(-2*x) * ((math.e)**x + 1) * (x*(math.e)**x - 1)
 def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (math.e)**(2*x) + 2)
 
 # Run analysis...
+bisection(f, 1.0, 2.0, 30, 0.0001)
 #newton_raphson(f, df, 0.5, 30, 0.00001)
 #secant(f, math.e, 4, 30, 0.00001)
 #regula_falsi(f, 0.0, 1.0, 30, 0.000001)
 #modified_newton(f, df, d2f, 0.5, 30, 0.00001)
-aitken(f, 0.5, 6)
+#aitken(f, 0.5, 6)
 #steffensen(f, 0.0, 30, 0.00001)
