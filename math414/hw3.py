@@ -114,10 +114,15 @@ def aitken(f, p0, n):
     # generate accelerated sequence
     print ""
     print "Generating accelerated sequence:"
+    p = p0
     i = 1
     while (i <= n):
         p1 = arr[i-1]
         p2 = arr[i]
+        if (p2-2*p1+p0 == 0):
+            print "Zero in the denominator."
+            print "Stopped at %.9f" % p
+            return
         p = p0 - ((p1-p0)**2)/(p2-2*p1+p0)
         print "Iteration %d: %.9f" % (i,p)
         p0 = p1
@@ -129,10 +134,15 @@ def aitken(f, p0, n):
 def steffensen(f, p0, n, tol):
     print "Using Steffensen's Method..."
     print "p0 = %.9f" % p0
+    p = p0
     i = 1
     while (i <= n):
         p1 = f(p0)
         p2 = f(p1)
+        if (p2-2*p1+p0 == 0):
+            print "Zero in the denominator."
+            print "Stopped at %.9f" % p
+            return
         p = p0 - ((p1-p0)**2)/(p2-2*p1+p0)
         print "Current approximation is %.9f" % p
         if (abs(p - p0) < tol):
@@ -144,12 +154,8 @@ def steffensen(f, p0, n, tol):
     print "Stopped at %.9f" % p
 
 # Function definitions
-def f(x): return (2 - math.e**x + x**2)/3
-#def f(x): return math.cos(x + math.sqrt(2)) + x*((x/2) + math.sqrt(2))
-#def df(x): return 2*x - 2*math.e**(-2*x) - 2*math.e**(-x) + 2*x*math.e**x
+def f(x): return x**3 - x - 1
 def df(x): return 2*(math.e)**(-2*x) * ((math.e)**x + 1) * (x*(math.e)**x - 1)
-#def df(x): return x - math.sin(x + math.sqrt(2)) + math.sqrt(2)
-#def d2f(x): return 2 + 4*math.e**(-2*x) + 2*math.e**(-x) + 2*x*math.e**x + 2*math.e**x
 def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (math.e)**(2*x) + 2)
 
 # Run analysis...
@@ -157,5 +163,5 @@ def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (
 #secant(f, math.e, 4, 30, 0.00001)
 #regula_falsi(f, 0.0, 1.0, 30, 0.000001)
 #modified_newton(f, df, d2f, 0.5, 30, 0.00001)
-aitken(f, 0.5, 6)
-#steffensen(f, 0.5, 30, 0.000000000001)
+#aitken(f, 1, 6)
+steffensen(f, 1.5, 30, 0.0001)
