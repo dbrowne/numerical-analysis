@@ -1,4 +1,4 @@
-# Root finding algorithms for equations in one variable
+# Root finding algorithms for nonlinear equations in one variable
 # Author: David Palma
 # Ref: Numerical Analysis (Burden and Faires, 9 ed.)
 # Last revised: 2011.10.04
@@ -6,7 +6,6 @@
 import math
 
 # Bisection method for finding roots
-# Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
 # Inputs: function, endpoints, maximum iterations, tolerance
 def bisection(f, a, b, n, tol):
     print "Using Bisection Method..."
@@ -29,7 +28,6 @@ def bisection(f, a, b, n, tol):
     print "Stopped at %.9f" % p
 
 # Fixed Point Iteration Method for finding roots
-# Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
 # Inputs: function, initial approximation, maximum iterations, tolerance
 def fixed_point(f, p0, n, tol):
     print "Using fixed point iteration..."
@@ -39,7 +37,7 @@ def fixed_point(f, p0, n, tol):
         p = f(p0)
         print "Current approximation is %.9f" % p
         if (abs(p - p0) < tol):
-            print "Approximate root is %.9f" % p
+            print "Approximate root is %.9f (found in %i steps)" %(p,i)
             return
         i += 1
         p0 = p
@@ -47,7 +45,6 @@ def fixed_point(f, p0, n, tol):
     print "Stopped at %.9f" % p
 
 # Newton's Method for finding roots
-# Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
 # Inputs: function, derivative, initial approximation, maximum iterations, tolerance
 def newton_raphson(f, df, p0, n, tol):
     print "Using Newton/Raphson Method..."
@@ -65,7 +62,6 @@ def newton_raphson(f, df, p0, n, tol):
     print "Stopped at %.9f" % p
 
 # Secant Method for finding roots
-# Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
 # Inputs: function, initial approximations, maximum iterations, tolerance
 def secant(f, p0, p1, n, tol):
     print "Using Secant Method..."
@@ -88,7 +84,6 @@ def secant(f, p0, p1, n, tol):
     print "Stopped at %.9f" % p
 	
 # Regula Falsi Method for finding roots
-# Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
 # Inputs: function, initial approximations, maximum iterations, tolerance
 def regula_falsi(f, p0, p1, n, tol):
     print "Using Regula Falsi (false position) method..."
@@ -171,7 +166,6 @@ def aitken(f, p0, n):
         i += 1
 
 # Steffensen's Method for finding roots
-# Algorithm from Burden and Faires, Numerical Analysis, 9 ed.
 # Inputs: function, initial approximation, maximum iterations, tolerance
 def steffensen(f, p0, n, tol):
     print "Using Steffensen's Method..."
@@ -196,13 +190,13 @@ def steffensen(f, p0, n, tol):
     print "Stopped at %.9f" % p
 
 # Function definitions
-def f(x): return x - x**3 - 4*x**2 + 10
+def f(x): return 0.5*(x + (3/x))
 def df(x): return 2*(math.e)**(-2*x) * ((math.e)**x + 1) * (x*(math.e)**x - 1)
 def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (math.e)**(2*x) + 2)
 
 # Run analysis...
 #bisection(f, 1.0, 2.0, 30, 0.0001)
-fixed_point(f, 1.5, 30, 0.00001)
+#fixed_point(f, 1.5, 30, 0.0001)
 #newton_raphson(f, df, 0.5, 30, 0.00001)
 #secant(f, math.e, 4, 30, 0.00001)
 #regula_falsi(f, 0.0, 1.0, 30, 0.000001)
