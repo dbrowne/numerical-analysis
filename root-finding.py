@@ -189,6 +189,42 @@ def steffensen(f, p0, n, tol):
     print "Root not found in %n steps..."
     print "Stopped at %.9f" % p
 
+# Horner's Method
+
+# Muller's Method
+# Inputs: 
+def muller(f, p0, p1, p2, n, tol):
+    print "Using Muller's Method..."
+    print "p0 = %.9f, p1 = %.9f, p2 = %.9f" % (p0, p1, p2)
+    h1 = p1 - p0
+    h2 = p2 - p1
+    d1 = (f(p1) - f(p0)) / h1
+    d2 = (f(p2) - f(p1)) / h2
+    d = (d2 - d1)/(h2 + h1)
+    i = 3
+    while (i <=  n):
+        b = d2 + h2*d
+        dd = (b*b - 4*f(p2)*d)**0.5
+        if (abs(b-dd) < abs(b + dd)):
+            e = b + dd
+        else:
+            e = b - dd
+        h = -2*f(p2) / e
+        p = p2 + h
+        if (abs(h) < tol):
+            print "Current approximation is %.9f" % p
+            return
+        p0 = p1
+        p1 = p2
+        h1 = p1 - p0
+        h2 = p2 - p1
+        d1 = (f(p1) - f(p0)) / h1
+        d2 = (f(p2) - f(p1)) / h2
+        d = (d2 - d1)/(h2 + h1)
+        i += 1         
+    print "Root not found in %n steps..."
+    print "Stopped at %.9f" % p
+
 # Function definitions
 def f(x): return 0.5*(x + (3/x))
 def df(x): return 2*(math.e)**(-2*x) * ((math.e)**x + 1) * (x*(math.e)**x - 1)
@@ -203,3 +239,4 @@ def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (
 #modified_newton(f, df, d2f, 0.5, 30, 0.00001)
 #aitken(f, 0.5, 6)
 #steffensen(f, 0.0, 30, 0.00001)
+#muller(f, 0.0, 0.5, 1.0, 30, 0.00001)
