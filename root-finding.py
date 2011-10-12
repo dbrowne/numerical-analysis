@@ -4,6 +4,21 @@
 # Last revised: 2011.10.04
 
 import math
+import cmath
+
+# Quadratic equation
+# Inputs: coefficients a, b, c, and tolerance
+def quad_solve(a, b, c, tol):
+    discriminant = b*b - 4*a*c
+    a, b, c, d = complex(a), complex(b), complex(c), complex(discriminant)
+    x1 = (-b + d**0.5)/(2.0*a)
+    x2 = (-b - d**0.5)/(2.0*a)
+    if abs(discriminant) < tol:
+        print "real and equal", abs(x1), abs(x2)
+        return
+    if abs(discriminant) > 0:
+        print "real", x1.real, x2.real
+    print "complex", x1, x2
 
 # Bisection method for finding roots
 # Inputs: function, endpoints, maximum iterations, tolerance
@@ -226,17 +241,18 @@ def muller(f, p0, p1, p2, n, tol):
     print "Stopped at %.9f" % p
 
 # Function definitions
-def f(x): return 0.5*(x + (3/x))
-def df(x): return 2*(math.e)**(-2*x) * ((math.e)**x + 1) * (x*(math.e)**x - 1)
+def f(x): return x**3 - x - 1
+def df(x): return 3*x**2 - 1
 def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (math.e)**(2*x) + 2)
 
 # Run analysis...
+quad_solve(1, 1.3247, 0.7548, 0.0001)
 #bisection(f, 1.0, 2.0, 30, 0.0001)
 #fixed_point(f, 1.5, 30, 0.0001)
-#newton_raphson(f, df, 0.5, 30, 0.00001)
+newton_raphson(f, df, -7.0, 30, 0.00001)
 #secant(f, math.e, 4, 30, 0.00001)
 #regula_falsi(f, 0.0, 1.0, 30, 0.000001)
 #modified_newton(f, df, d2f, 0.5, 30, 0.00001)
 #aitken(f, 0.5, 6)
 #steffensen(f, 0.0, 30, 0.00001)
-#muller(f, 0.0, 0.5, 1.0, 30, 0.00001)
+muller(f, 0.0, 1.0, 2.0, 30, 0.00001)
