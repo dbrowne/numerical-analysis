@@ -1,7 +1,7 @@
 # Root finding algorithms for nonlinear equations in one variable
 # Author: David Palma
 # Ref: Numerical Analysis (Burden and Faires, 9 ed.)
-# Last revised: 2011.10.04
+# Last revised: 2011.10.11
 
 import math
 import cmath
@@ -211,6 +211,8 @@ def steffensen(f, p0, n, tol):
 def muller(f, p0, p1, p2, n, tol):
     print "Using Muller's Method..."
     print "p0 = %.9f, p1 = %.9f, p2 = %.9f" % (p0, p1, p2)
+    p0, p1, p2 = complex(p0), complex(p1), complex(p2)
+    h1, h2, d1, d2, d, dd = complex(), complex(), complex(), complex(), complex(), complex()
     h1 = p1 - p0
     h2 = p2 - p1
     d1 = (f(p1) - f(p0)) / h1
@@ -226,11 +228,13 @@ def muller(f, p0, p1, p2, n, tol):
             e = b - dd
         h = -2*f(p2) / e
         p = p2 + h
+        print "Current approximation is", p
         if (abs(h) < tol):
-            print "Current approximation is %.9f" % p
+            print "Root is ", p, " (%d iterations)" % i
             return
         p0 = p1
         p1 = p2
+        p2 = p
         h1 = p1 - p0
         h2 = p2 - p1
         d1 = (f(p1) - f(p0)) / h1
@@ -238,21 +242,21 @@ def muller(f, p0, p1, p2, n, tol):
         d = (d2 - d1)/(h2 + h1)
         i += 1         
     print "Root not found in %n steps..."
-    print "Stopped at %.9f" % p
+    print "Stopped at", p
 
 # Function definitions
-def f(x): return x**3 - x - 1
-def df(x): return 3*x**2 - 1
+def f(x): return x**4 +2*x**2-x-3
+def df(x): return 4*x**3 +4*x -1
 def d2f(x): return 2*(math.e)**(-2*x) * ((x+1)*(math.e)**(3*x) + (math.e)**x + (math.e)**(2*x) + 2)
 
 # Run analysis...
-quad_solve(1, 1.3247, 0.7548, 0.0001)
+#quad_solve(1, 1.3247, 0.7548, 0.0001)
 #bisection(f, 1.0, 2.0, 30, 0.0001)
 #fixed_point(f, 1.5, 30, 0.0001)
-newton_raphson(f, df, -7.0, 30, 0.00001)
+newton_raphson(f, df, 1.0, 30, 0.0001)
 #secant(f, math.e, 4, 30, 0.00001)
 #regula_falsi(f, 0.0, 1.0, 30, 0.000001)
 #modified_newton(f, df, d2f, 0.5, 30, 0.00001)
 #aitken(f, 0.5, 6)
 #steffensen(f, 0.0, 30, 0.00001)
-muller(f, 0.0, 1.0, 2.0, 30, 0.00001)
+muller(f, 2.0, 3.0, 4.0, 30, 0.0001)
