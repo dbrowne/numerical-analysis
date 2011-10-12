@@ -6,19 +6,19 @@
 import math
 import cmath
 
-# Quadratic equation
+# Quadratic equation solver
 # Inputs: coefficients a, b, c, and tolerance
 def quad_solve(a, b, c, tol):
-    discriminant = b*b - 4*a*c
-    a, b, c, d = complex(a), complex(b), complex(c), complex(discriminant)
+    d = b*b - 4*a*c
+    a, b, c, d = complex(a), complex(b), complex(c), complex(d)
     x1 = (-b + d**0.5)/(2.0*a)
     x2 = (-b - d**0.5)/(2.0*a)
-    if abs(discriminant) < tol:
+    if abs(d) < tol:
         print "real and equal", abs(x1), abs(x2)
         return
-    if abs(discriminant) > 0:
-        print "real", x1.real, x2.real
-    print "complex", x1, x2
+    if abs(d) > 0:
+        print "real root", x1.real, x2.real
+    print "complex root", x1, x2
 
 # Bisection method for finding roots
 # Inputs: function, endpoints, maximum iterations, tolerance
